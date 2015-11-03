@@ -9,11 +9,11 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"PushNotification\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
+                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "xml": "<feature name=\"PushNotification\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -22,13 +22,13 @@
         }
     },
     "installed_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.pubnub.webinar"
+        },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.pubnub.webinar"
         },
         "phonegap-plugin-push": {
-            "PACKAGE_NAME": "com.pubnub.webinar"
-        },
-        "cordova-plugin-device": {
             "PACKAGE_NAME": "com.pubnub.webinar"
         }
     },

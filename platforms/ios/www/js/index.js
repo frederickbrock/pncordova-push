@@ -113,6 +113,24 @@ var app = {
 
 
 
+        //initialize punb
+        var pubnub = PUBNUB.init({
+            subscribe_key: 'demo'
+            ,publish_key: 'demo'
+        });
+
+        pubnub.subscribe({
+            cahnnel: 'MSFT'
+            callback: function(message,envelope, timetoken){
+                var messageDiv = document.getElementById('message-container');
+                var newMessage = document.createElement("div");
+                newMessage.innerHTML = JSON.stringify(message);                
+                messageDiv.appendChild(newMessage);
+            }
+        })
+
+
+
 
     },
     // Update DOM on a Received Event

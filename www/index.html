@@ -68,16 +68,42 @@
 
             </div>
 
+                
             <div class="row">
+                <div class="s6">
+                    <p>Pubnub realtime</p>
+                </div>
+                <div class="s6" id="message-container">
+                    
+                </div>
             </div>
 
-        </div>
 
         <div id="cards"></div>
         <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
         <script type="text/javascript" src="bower_components/Materialize/dist/js/materialize.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" charset="utf-8" src="PushNotification.js"></script>
+	    <script type="text/javascript" src="bower_components/pubnub/web/pubnub.js"></script>
+        <script type="text/javascript">
+
+            var pubnub = PUBNUB.init({subscribe_key: 'demo', publish_key: 'demo'});
+        
+            pubnub.subscribe({
+                 channel: 'AMZN',
+                callback: function(message,envelope, timetoken){
+                                 var messageDiv = document.getElementById('message-container');
+                                 var newMessage = document.createElement("div");
+                                 newMessage.innerHTML = JSON.stringify(message);                
+                                 messageDiv.appendChild(newMessage);
+                },
+                error: function(err){
+                    alert('error');
+                }
+            });
+
+        
+        </script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>
