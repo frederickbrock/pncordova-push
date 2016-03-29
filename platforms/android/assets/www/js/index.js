@@ -18,7 +18,7 @@
  */
 var app = {
 
-  
+
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -35,8 +35,8 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        
-       
+
+
 
         var options = {
             "android":{
@@ -58,11 +58,11 @@ var app = {
         document.getElementById("devicePlatform").innerHTML = device.platform;
         document.getElementById("deviceName").innerHTML = device.name;
         document.getElementById("deviceFramework").innerHTML = device.cordova ? device.cordov:device.phonegap;
-       
+
 
         var push = PushNotification.init(options);
         var registerWithPubNub = function(regID){
-              
+
             var subscribe_key = "sub-c-df260c52-9601-11e4-bff9-02ee2ddab7fe";
             var channel_name = "cordova_push";
 
@@ -82,6 +82,7 @@ var app = {
 
 
         push.on("registration", function(data){
+                console.log('registration for IOS');
                 document.getElementById('registrationID').innerHTML = "<p>" + data.registrationId + "</p>";
                 registerWithPubNub(data.registrationId);
 
@@ -112,7 +113,7 @@ var app = {
         });
 
 
-       
+
 
 
 

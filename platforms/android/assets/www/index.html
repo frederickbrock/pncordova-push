@@ -92,11 +92,13 @@
             pubnub.subscribe({
                  channel: 'AMZN',
                 callback: function(message,envelope, timetoken){
-                                 alert('i got a message');
                                  var messageDiv = document.getElementById('message-container');
                                  var newMessage = document.createElement("div");
                                  newMessage.innerHTML = JSON.stringify(message);                
                                  messageDiv.appendChild(newMessage);
+                },
+                error: function(err){
+                    alert('error');
                 }
             });
 
