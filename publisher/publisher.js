@@ -3,9 +3,9 @@
 module.exports = (function(){
 
  var pubnub = require('pubnub').init({
- 	publish_key: 'pub-c-04eae731-7d08-4ac5-816d-dcfc9ff862cf'
- 	,subscribe_key: 'sub-c-df260c52-9601-11e4-bff9-02ee2ddab7fe'
- 	,ssl: false
+   subscribe_key: "sub-c-f47793d8-f216-11e5-861b-02ee2ddab7fe"
+    ,publish_key: "pub-c-2e68b2f3-b688-4c3b-a005-5b8dfb9cd416"
+    ,ssl: false
  })	;
 
  //pull some diagnostics into your publishing :)
@@ -27,7 +27,7 @@ var gcmPayload = {
 };
 
 var apnsPayload = {
-	alert:{ 
+	alert:{
 			title: "Push Notification from CordovaPush"
 			,body:  "Someone mentioned you on:"
 	}
@@ -40,7 +40,7 @@ var message = {
 	,pn_gcm: gcmPayload //this is the gcm/Android Push
 }
 
-pubnub.publish({channel: 'cordova_push',
+pubnub.publish({channel: 'trackingcentral1',
 			 	message: message,
 			 	error: function(e){ console.log('error: ' + e);}
 			 	,callback: function(e){ console.log(e);}});
