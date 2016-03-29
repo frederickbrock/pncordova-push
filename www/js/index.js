@@ -1,117 +1,134 @@
-<!DOCTYPE html>
-<html>
-    <head>
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+var app = {
 
 
-        <!--
-         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src 'self' http://pubsub.pubnub.com">
-         -->
+    // Application Constructor
+    initialize: function() {
+        this.bindEvents();
+    },
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicitly call 'app.receivedEvent(...);'
+    onDeviceReady: function() {
 
 
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link type="text/css" rel="stylesheet" href="bower_components/Materialize/dist/css/materialize.css"  />
 
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Push Notifications</title>
-    </head>
-    <body>
-        <nav>
-            <div class="nav-wrapper">
+        var options = {
+            "android":{
+                "senderID": "524367131484"
 
-            </div>
-        </nav>
+            },
+            "ios": {
+                "alert": "true"
+                ,"badge": "true"
+                ,"sound": "true"
+            },
+            "windows": {
 
-        <div class="container">
-            <div class="row">
-                  <div class="col s12 m6">
-                  <div class="card darken-1">
+            }
 
-                    <div class="card-content black-text">
-                        <table>
-                            <tr>
-                                <td>Platform</td>
-                                <td><span id="devicePlatform"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Device Name:</td>
-                                <td><span id="deviceName"></td>
-                            </tr>
-                            <tr>
-                                <td>Framework</td>
-                                <td><span id="deviceFramework"></td>
-                            </tr>
+        };
 
-                        </table>
-                      </div>
-                    </div>
-
-                   </div>
-                  </div>
+        console.log('device is: ' + device);
+        document.getElementById("devicePlatform").innerHTML = device.platform;
+        document.getElementById("deviceName").innerHTML = device.name;
+        document.getElementById("deviceFramework").innerHTML = device.cordova ? device.cordov:device.phonegap;
 
 
-            <div class="row">
-                <div class="s6">
-                    <p>Device Registration ID:</p>
-                </div>
-                <div class="s6" id="registrationID">
-                </div>
+        var push = PushNotification.init(options);
+        var registerWithPubNub = function(regID){
 
-                <div class="s6">
-                    <p>Pubnub Registration Status: </p>
-                </div>
-                <div class="s6" id="pubnubRegistrationStatus">
+            var subscribe_key = "sub-c-df260c52-9601-11e4-bff9-02ee2ddab7fe";
+            var channel_name = "cordova_push";
 
-                </div>
-
-            </div>
+            var registrationType = "apn";
+            if((device.platform != undefined) && (device.platform.toLowerCase() === 'android')){
+                registrationType = "gcm";
+            }
 
 
-            <div class="row">
-                <div class="s6">
-                    <p>Pubnub realtime</p>
-                </div>
-                <div class="s6" id="message-container">
 
-                </div>
-            </div>
+            var url = "http://pubsub.pubnub.com/v1/push/sub-key/" + subscribe_key + "/devices/" + regID + "?add=" + channel_name + "&type=" + registrationType;
+            $.get(url, function(data){
+                document.getElementById('pubnubRegistrationStatus').innerHTML = "Channel: " + channel_name + ", platform: " + registrationType + ", result: " + data;
 
-
-        <div id="cards"></div>
-        <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
-        <script type="text/javascript" src="bower_components/Materialize/dist/js/materialize.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" charset="utf-8" src="PushNotification.js"></script>
-	    <script type="text/javascript" src="bower_components/pubnub/web/pubnub.js"></script>
-
-        <script type="text/javascript">
-
-            var pubnub = PUBNUB.init(
-                {subscribe_key: "sub-c-f47793d8-f216-11e5-861b-02ee2ddab7fe"
-                 ,publish_key: "pub-c-2e68b2f3-b688-4c3b-a005-5b8dfb9cd416"
-                 ,ssl: true
-
-                });
-
-                pubnub.subscribe({
-                     channel: 'trackingcentral1',
-                        //message, envelope,timetoken
-                      callback: function(message,envelope, timetoken){
-                                       var messageDiv = document.getElementById('message-container');
-
-                                        var newMessage = document.createElement("div");
-                                        newMessage.innerHTML = JSON.stringify(message);
-                                        messageDiv.appendChild(newMessage);
-                },
-                error: function(err){
-                    alert('error');
-                }
             });
+        };
 
 
-        </script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
-</html>
+        push.on("registration", function(data){
+                console.log('registration for IOS');
+                document.getElementById('registrationID').innerHTML = "<p>" + data.registrationId + "</p>";
+                registerWithPubNub(data.registrationId);
+
+        });
+
+
+        push.on('notification', function(data) {
+
+            console.log("notification event");
+            console.log(JSON.stringify(data));
+            var cards = document.getElementById("cards");
+            var content = '<div class="row">' +
+                  '<div class="col s12 m6">' +
+                  '  <div class="card darken-1">' +
+                  '    <div class="card-content black-text">' +
+                  '      <span class="card-title black-text">' + data.title + '</span>' +
+                  '      <p>' + data.message + '</p>' +
+                  '    </div>' +
+                  '  </div>' +
+                  ' </div>' +
+                  '</div>';
+            cards.innerHTML += content;
+        });
+
+        push.on('error', function(e) {
+            console.log("push error");
+            console.log(e);
+        });
+
+
+
+
+
+
+    },
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+        var parentElement = document.getElementById(id);
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
+
+        listeningElement.setAttribute('style', 'display:none;');
+        receivedElement.setAttribute('style', 'display:block;');
+
+        console.log('Received Event: ' + id);
+    }
+};
+
+app.initialize();

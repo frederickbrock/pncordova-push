@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-      
-        
-        <!-- 
+
+
+        <!--
          <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src 'self' http://pubsub.pubnub.com">
          -->
 
@@ -28,7 +28,7 @@
             <div class="row">
                   <div class="col s12 m6">
                   <div class="card darken-1">
-                  
+
                     <div class="card-content black-text">
                         <table>
                             <tr>
@@ -51,7 +51,7 @@
                    </div>
                   </div>
 
-            
+
             <div class="row">
                 <div class="s6">
                     <p>Device Registration ID:</p>
@@ -63,18 +63,18 @@
                     <p>Pubnub Registration Status: </p>
                 </div>
                 <div class="s6" id="pubnubRegistrationStatus">
-                    
+
                 </div>
 
             </div>
 
-                
+
             <div class="row">
                 <div class="s6">
                     <p>Pubnub realtime</p>
                 </div>
                 <div class="s6" id="message-container">
-                    
+
                 </div>
             </div>
 
@@ -87,22 +87,28 @@
 	    <script type="text/javascript" src="bower_components/pubnub/web/pubnub.js"></script>
         <script type="text/javascript">
 
-            var pubnub = PUBNUB.init({subscribe_key: 'demo', publish_key: 'demo'});
-        
-            pubnub.subscribe({
-                 channel: 'AMZN',
-                callback: function(message,envelope, timetoken){
-                                 var messageDiv = document.getElementById('message-container');
-                                 var newMessage = document.createElement("div");
-                                 newMessage.innerHTML = JSON.stringify(message);                
-                                 messageDiv.appendChild(newMessage);
-                },
-                error: function(err){
-                    alert('error');
-                }
-            });
+                    var pubnub = PUBNUB.init(
+                        {subscribe_key: "sub-c-f47793d8-f216-11e5-861b-02ee2ddab7fe"
+                         ,publish_key: "pub-c-2e68b2f3-b688-4c3b-a005-5b8dfb9cd416"
+                         ,ssl: true
 
-        
+                        });
+
+                        pubnub.subscribe({
+                             channel: 'trackingcentral1',
+                                //message, envelope,timetoken
+                              callback: function(message,envelope, timetoken){
+                                               var messageDiv = document.getElementById('message-container');
+
+                                                var newMessage = document.createElement("div");
+                                                newMessage.innerHTML = JSON.stringify(message);
+                                                messageDiv.appendChild(newMessage);
+                        },
+                        error: function(err){
+                            alert("Error while receiving messages: " + err);
+                        }
+                    });
+
         </script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
