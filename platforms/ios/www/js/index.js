@@ -66,7 +66,7 @@ var app = {
             var subscribe_key = "sub-c-df260c52-9601-11e4-bff9-02ee2ddab7fe";
             var channel_name = "cordova_push";
 
-            var registrationType = "apn";
+            var registrationType = "apns";
             if((device.platform != undefined) && (device.platform.toLowerCase() === 'android')){
                 registrationType = "gcm";
             }
